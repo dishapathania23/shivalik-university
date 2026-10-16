@@ -1,0 +1,34 @@
+# ==============================================================================
+# ROBOTS.TXT FOR SHIVALIK UNIVERSITY (SU) SHIMLA WEB PORTAL
+# Website: https://shivalikuniversity.edu.in
+# Description: Search engine & AI crawler instructions for SEO, AEO, and GEO.
+# ==============================================================================
+
+# Standard Search Engine Crawlers (Google, Bing, Yahoo, DuckDuckGo, Baidu, Yandex)
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /scratch/
+Disallow: /*.ps1$
+
+# AI Search & Answer Engine Crawlers (ChatGPT, Perplexity, Claude, Gemini, Applebot)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Sitemap Location
+Sitemap: https://shivalikuniversity.edu.in/sitemap.xml

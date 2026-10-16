@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordPress CMS Admin Panel | Shivalik University</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* WORDPRESS-STYLE ADMIN PANEL CSS */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; background: #F0F0F1; color: #3C434A; font-size: 13px; }
+
+    /* TOP WORDPRESS ADMIN BAR */
+    .wp-admin-bar {
+      height: 32px;
+      background: #1D2327;
+      color: #F0F0F1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 99999;
+    }
+
+    .wp-admin-bar-left, .wp-admin-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .wp-admin-bar a {
+      color: #F0F0F1;
+      text-decoration: none;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .wp-admin-bar a:hover {
+      color: #72AEE6;
+    }
+
+    /* WORDPRESS SIDEBAR & CONTENT CONTAINER */
+    .wp-admin-container {
+      display: flex;
+      margin-top: 32px;
+      min-height: calc(100vh - 32px);
+    }
+
+    .wp-sidebar {
+      width: 160px;
+      background: #1D2327;
+      color: #F0F0F1;
+      flex-shrink: 0;
+    }
+
+    .wp-menu {
+      list-style: none;
+      padding: 12px 0;
+    }
+
+    .wp-menu-item a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      color: #F0F0F1;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .wp-menu-item a:hover, .wp-menu-item a.active {
+      background: #2271B1;
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* MAIN CONTENT AREA */
+    .wp-content {
+      flex: 1;
+      padding: 24px 32px;
+    }
+
+    .wp-header-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .wp-header-title h1 {
+      font-size: 23px;
+      font-weight: 400;
+      color: #1D2327;
+    }
+
+    .wp-card {
+      background: #FFFFFF;
+      border: 1px solid #C3C4C7;
+      box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+      padding: 20px;
+      margin-bottom: 24px;
+      border-radius: 4px;
+    }
+
+    .wp-card h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1D2327;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #F0F0F1;
+      padding-bottom: 10px;
+    }
+
+    .wp-form-group {
+      margin-bottom: 16px;
+    }
+
+    .wp-form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #1D2327;
+    }
+
+    .wp-input, .wp-select, .wp-textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #8C8F94;
+      border-radius: 4px;
+      font-size: 13px;
+      background: #FFFFFF;
+      color: #2C3338;
+    }
+
+    .wp-input:focus, .wp-select:focus, .wp-textarea:focus {
+      border-color: #2271B1;
+      outline: none;
+      box-shadow: 0 0 0 1px #2271B1;
+    }
+
+    .btn-wp-primary {
+      background: #2271B1;
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 3px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-wp-primary:hover {
+      background: #135E96;
+    }
+
+    .btn-wp-danger {
+      background: #D63638;
+      color: #FFFFFF;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 3px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .btn-wp-danger:hover {
+      background: #B32D2E;
+    }
+
+    /* WORDPRESS TABLES */
+    .wp-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #FFFFFF;
+      border: 1px solid #C3C4C7;
+    }
+
+    .wp-table th {
+      background: #F6F7F7;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #2C3338;
+      border-bottom: 1px solid #C3C4C7;
+    }
+
+    .wp-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #F0F0F1;
+      color: #2C3338;
+    }
+
+    .wp-table tr:hover td {
+      background: #F6F7F7;
+    }
+
+    .tab-section {
+      display: none;
+    }
+
+    .tab-section.active {
+      display: block;
+    }
+  </style>
+  <!-- SEO META TAGS -->
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Shivalik University Administration">
+  <meta name="keywords" content="Shivalik University, SU Shimla, Best Varsity Himachal Pradesh, Engineering Admissions 2026, MBA Specializations, B.Tech Computer Science AI, SU-SAT Exam, Scholarships Shimla">
+  
+  <!-- OPENGRAPH SOCIAL MEDIA METADATA (SEO/AEO) -->
+  <meta property="og:site_name" content="Shivalik University (SU)">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Shivalik University (SU) Shimla | Top Private Varsity in HP">
+  <meta property="og:description" content="Official portal of Shivalik University, Shimla. NAAC A++ accredited offering B.Tech, MBA, BCA, Biotech, B.Pharm & Law degrees with up to 100% SU-SAT scholarships.">
+  <meta property="og:image" content="assets/hero-campus.jpg">
+
+  <!-- GENERATIVE ENGINE OPTIMIZATION (GEO) METADATA -->
+  <meta name="geo.region" content="IN-HP">
+  <meta name="geo.placename" content="Shimla, Himachal Pradesh, India">
+  <meta name="geo.position" content="31.1048;77.1734">
+  <meta name="ICBM" content="31.1048, 77.1734">
+
+  <!-- SCHEMA.ORG JSON-LD STRUCTURED DATA (AEO / GEO / SEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollegeOrUniversity",
+    "name": "Shivalik University",
+    "alternateName": "SU Shimla",
+    "url": "https://shivalikuniversity.edu.in",
+    "logo": "https://shivalikuniversity.edu.in/assets/su-crest-logo.jpg",
+    "image": "https://shivalikuniversity.edu.in/assets/hero-campus.jpg",
+    "description": "Shivalik University is a premier NAAC A++ accredited private university located in Shimla, Himachal Pradesh offering B.Tech, MBA, B.Pharm, Law, and Ph.D. degrees.",
+    "telephone": "1800-200-8888",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Shivalik Knowledge City, Pine Hills",
+      "addressLocality": "Shimla",
+      "addressRegion": "Himachal Pradesh",
+      "postalCode": "171001",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 31.1048,
+      "longitude": 77.1734
+    },
+    "sameAs": [
+      "https://facebook.com/shivalikuniversity",
+      "https://linkedin.com/school/shivalikuniversity",
+      "https://twitter.com/shivalik_univ"
+    ]
+  }
+  </script>
+
+  <!-- ANSWER ENGINE OPTIMIZATION (AEO) FAQ SCHEMA -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Where is Shivalik University located?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Shivalik University is located in Shimla Hills, Himachal Pradesh, India across a 200-acre eco-green smart campus."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the highest package at Shivalik University?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The highest package offered during the 2025 placement drive was INR 52.4 LPA at Google AI Research."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How to get a scholarship at Shivalik University?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Students can appear for the SU-SAT 2026 entrance exam. Academic scores above 90% receive a 100% tuition waiver, 80-89% receive 50%, and 70-79% receive 25% waiver."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- WORDPRESS TOP BAR -->
+  <div class="wp-admin-bar">
+    <div class="wp-admin-bar-left">
+      <a href="index.html"><strong>W</strong> Shivalik University CMS</a>
+      <a href="index.html"> Visit Site</a>
+      <a href="#courses" onclick="switchTab('tab-courses')"> Add New Course</a>
+      <a href="#news" onclick="switchTab('tab-news')"> Add News Post</a>
+    </div>
+    <div class="wp-admin-bar-right">
+      <span>Howdy, <strong>Dean Admin</strong></span>
+      <a href="index.html" style="color: #F87171;">Log Out</a>
+    </div>
+  </div>
+
+  <!-- WORDPRESS SIDEBAR & CONTENT -->
+  <div class="wp-admin-container">
+    
+    <!-- LEFT SIDEBAR MENU -->
+    <aside class="wp-sidebar">
+      <ul class="wp-menu">
+        <li class="wp-menu-item"><a href="javascript:void(0)" class="active" onclick="switchTab('tab-dashboard', this)"> Dashboard</a></li>
+        <li class="wp-menu-item"><a href="javascript:void(0)" onclick="switchTab('tab-courses', this)"> Courses Manager</a></li>
+        <li class="wp-menu-item"><a href="javascript:void(0)" onclick="switchTab('tab-news', this)"> News & Posts</a></li>
+        <li class="wp-menu-item"><a href="javascript:void(0)" onclick="switchTab('tab-settings', this)"> Site Settings</a></li>
+        <li class="wp-menu-item"><a href="javascript:void(0)" onclick="switchTab('tab-applications', this)"> Applications (2,480)</a></li>
+        <li class="wp-menu-item"><a href="javascript:void(0)" onclick="switchTab('tab-payments', this)"> Fee Payments</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="wp-content">
+      
+      <!-- TAB 1: DASHBOARD OVERVIEW -->
+      <div id="tab-dashboard" class="tab-section active">
+        <div class="wp-header-title">
+          <h1>WordPress CMS Control Panel & Dashboard</h1>
+          <a href="index.html" class="btn-wp-primary" target="_blank">View Live Website </a>
+        </div>
+
+        <div class="wp-card" style="background: #2271B1; color: #FFFFFF;">
+          <h2 style="color: #FFFFFF; border-bottom-color: rgba(255,255,255,0.2);">Welcome to Shivalik University Content Management System (CMS)</h2>
+          <p style="font-size: 14px; line-height: 1.6;">
+            From this WordPress-style admin panel, you can add new degree courses, publish news announcements, edit site helpline numbers, and manage student applications in real-time.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+          <div class="wp-card">
+            <h2> Total Active Courses</h2>
+            <p style="font-size: 28px; font-weight: 700; color: #2271B1;" id="countCourses">18 Programs</p>
+            <p style="color: #646970; margin-top: 6px;">Across 5 Academic Faculties</p>
+          </div>
+
+          <div class="wp-card">
+            <h2> SU-SAT 2026 Applicants</h2>
+            <p style="font-size: 28px; font-weight: 700; color: #008A20;">2,480 Students</p>
+            <p style="color: #646970; margin-top: 6px;">+18.4% growth this month</p>
+          </div>
+
+          <div class="wp-card">
+            <h2> Total Fee Revenue</h2>
+            <p style="font-size: 28px; font-weight: 700; color: #D63638;">4.85 Crore</p>
+            <p style="color: #646970; margin-top: 6px;">Verified Online Deposits</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: COURSES MANAGER (ADD/EDIT/DELETE COURSES) -->
+      <div id="tab-courses" class="tab-section">
+        <div class="wp-header-title">
+          <h1>Courses & Degree Programs Manager</h1>
+        </div>
+
+        <!-- ADD NEW COURSE FORM -->
+        <div class="wp-card">
+          <h2> Add New Degree Course</h2>
+          <form id="addCourseForm" onsubmit="saveNewCourse(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="wp-form-group">
+                <label>Course Title *</label>
+                <input type="text" id="cTitle" class="wp-input" placeholder="e.g. B.Tech Artificial Intelligence" required>
+              </div>
+
+              <div class="wp-form-group">
+                <label>Academic Faculty / School *</label>
+                <select id="cSchool" class="wp-select" required>
+                  <option value="Faculty of Engineering & Technology">Faculty of Engineering & Technology</option>
+                  <option value="School of Business & Management">School of Business & Management</option>
+                  <option value="Institute of Computer Applications">Institute of Computer Applications</option>
+                  <option value="Faculty of Biotechnology & Applied Sciences">Faculty of Biotechnology & Applied Sciences</option>
+                  <option value="School of Law & Architecture">School of Law & Architecture</option>
+                </select>
+              </div>
+
+              <div class="wp-form-group">
+                <label>Duration *</label>
+                <input type="text" id="cDuration" class="wp-input" placeholder="e.g. 4 Years" required>
+              </div>
+
+              <div class="wp-form-group">
+                <label>Annual Tuition Fee (INR) *</label>
+                <input type="text" id="cFee" class="wp-input" placeholder="e.g. 1,85,000 / year" required>
+              </div>
+            </div>
+
+            <div class="wp-form-group">
+              <label>Academic Eligibility Criteria *</label>
+              <input type="text" id="cEligibility" class="wp-input" placeholder="e.g. 10+2 with Physics & Mathematics (Min 60%)" required>
+            </div>
+
+            <div class="wp-form-group">
+              <label>Course Overview & Highlights *</label>
+              <textarea id="cDesc" class="wp-textarea" rows="3" placeholder="Enter course description and highlights..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-wp-primary">Publish New Course -></button>
+          </form>
+        </div>
+
+        <!-- EXISTING COURSES TABLE -->
+        <div class="wp-card">
+          <h2> Published Academic Courses</h2>
+          <table class="wp-table" id="coursesAdminTable">
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th>School / Faculty</th>
+                <th>Duration</th>
+                <th>Annual Fee</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="coursesAdminTbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: NEWS & POSTS MANAGER -->
+      <div id="tab-news" class="tab-section">
+        <div class="wp-header-title">
+          <h1>News & Press Releases CMS</h1>
+        </div>
+
+        <div class="wp-card">
+          <h2> Publish New Announcement / News Post</h2>
+          <form id="addNewsForm" onsubmit="saveNewNews(event)">
+            <div class="wp-form-group">
+              <label>Post Headline *</label>
+              <input type="text" id="nTitle" class="wp-input" placeholder="e.g. SU-SAT 2026 Phase-2 Registration Opened" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="wp-form-group">
+                <label>Category Badge *</label>
+                <input type="text" id="nCategory" class="wp-input" placeholder="e.g. ADMISSIONS 2026" required>
+              </div>
+
+              <div class="wp-form-group">
+                <label>Publish Date *</label>
+                <input type="text" id="nDate" class="wp-input" placeholder="e.g. July 29, 2026" required>
+              </div>
+            </div>
+
+            <div class="wp-form-group">
+              <label>Article Summary / Excerpt *</label>
+              <textarea id="nExcerpt" class="wp-textarea" rows="3" placeholder="Enter post summary..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-wp-primary">Publish Post -></button>
+          </form>
+        </div>
+      </div>
+
+      <!-- TAB 4: SITE SETTINGS -->
+      <div id="tab-settings" class="tab-section">
+        <div class="wp-header-title">
+          <h1>Global Site Settings & Branding</h1>
+        </div>
+
+        <div class="wp-card">
+          <h2> Header & Portal Contact Settings</h2>
+          <form id="siteSettingsForm" onsubmit="saveSiteSettings(event)">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="wp-form-group">
+                <label>University Name *</label>
+                <input type="text" id="sName" class="wp-input" value="Shivalik University" required>
+              </div>
+
+              <div class="wp-form-group">
+                <label>Admission Helpline Toll-Free *</label>
+                <input type="text" id="sPhone" class="wp-input" value="1800 200 8888" required>
+              </div>
+
+              <div class="wp-form-group">
+                <label>NAAC Accreditation Grade *</label>
+                <input type="text" id="sNaac" class="wp-input" value="NAAC Grade A++ Accredited" required>
+              </div>
+
+              <div class="wp-form-group">
+                <label>Highest Placement Package *</label>
+                <input type="text" id="sHighest" class="wp-input" value="52.4 LPA Highest Package" required>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-wp-primary">Save Changes -></button>
+          </form>
+        </div>
+      </div>
+
+      <!-- TAB 5: APPLICATIONS -->
+      <div id="tab-applications" class="tab-section">
+        <div class="wp-header-title">
+          <h1>SU-SAT 2026 Student Applications</h1>
+        </div>
+
+        <div class="wp-card">
+          <h2> Applicants Leads Register</h2>
+          <table class="wp-table">
+            <thead>
+              <tr>
+                <th>App ID</th>
+                <th>Student Name</th>
+                <th>Target Program</th>
+                <th>Phone / WhatsApp</th>
+                <th>Score</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SU2026-9842</td>
+                <td>Aarav Sharma</td>
+                <td>B.Tech Computer Science & AI</td>
+                <td>+91 98765 43210</td>
+                <td>94.8%</td>
+                <td><span style="color: #047857; font-weight: 700;">Approved (100% Waiver)</span></td>
+              </tr>
+              <tr>
+                <td>SU2026-9841</td>
+                <td>Priya Verma</td>
+                <td>MBA Financial Management</td>
+                <td>+91 98123 45678</td>
+                <td>88.2%</td>
+                <td><span style="color: #1D4ED8; font-weight: 700;">Deposit Paid</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 6: PAYMENTS -->
+      <div id="tab-payments" class="tab-section">
+        <div class="wp-header-title">
+          <h1>Fee Transactions Audit</h1>
+        </div>
+
+        <div class="wp-card">
+          <h2> Live Fee Audit Log</h2>
+          <table class="wp-table">
+            <thead>
+              <tr>
+                <th>Txn Ref ID</th>
+                <th>Student Name</th>
+                <th>Payment Mode</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SU-TXN-2026-8891</td>
+                <td>Aarav Sharma</td>
+                <td>UPI (GPay)</td>
+                <td>10,000</td>
+                <td><span style="color: #047857; font-weight: 700;">SUCCESS</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    // WordPress Tab Switcher
+    function switchTab(tabId, el) {
+      document.querySelectorAll('.tab-section').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.wp-menu-item a').forEach(a => a.classList.remove('active'));
+      
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+      if (el) el.classList.add('active');
+    }
+
+    // Default Published Courses Dataset
+    const defaultCourses = [
+      { id: "btech-cse-ai", title: "B.Tech Computer Science & AI", school: "Faculty of Engineering & Technology", duration: "4 Years", fee: "1,85,000 / year" },
+      { id: "btech-robotics", title: "B.Tech Robotics & Automation", school: "Faculty of Engineering & Technology", duration: "4 Years", fee: "1,75,000 / year" },
+      { id: "mba-finance", title: "MBA Financial Management", school: "School of Business & Management", duration: "2 Years", fee: "2,15,000 / year" },
+      { id: "mba-marketing", title: "MBA Marketing Management", school: "School of Business & Management", duration: "2 Years", fee: "2,10,000 / year" },
+      { id: "mba-hr", title: "MBA Human Resource Management", school: "School of Business & Management", duration: "2 Years", fee: "2,05,000 / year" },
+      { id: "bca-cloud", title: "BCA Cloud Computing & Cyber Security", school: "Institute of Computer Applications", duration: "3 Years", fee: "1,25,000 / year" },
+      { id: "bsc-biotech", title: "B.Sc Biotechnology & Himalayan Flora", school: "Faculty of Biotechnology & Applied Sciences", duration: "3 Years", fee: "1,15,000 / year" },
+      { id: "bpharm", title: "Bachelor of Pharmacy (B.Pharm)", school: "Faculty of Biotechnology & Applied Sciences", duration: "4 Years", fee: "1,45,000 / year" }
+    ];
+
+    function renderAdminCoursesTable() {
+      const tbody = document.getElementById("coursesAdminTbody");
+      if (!tbody) return;
+
+      const stored = JSON.parse(localStorage.getItem("su_courses") || "null") || defaultCourses;
+      document.getElementById("countCourses").textContent = `${stored.length} Programs`;
+
+      tbody.innerHTML = "";
+      stored.forEach((c, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${c.title}</strong></td>
+          <td>${c.school}</td>
+          <td>${c.duration}</td>
+          <td>${c.fee}</td>
+          <td>
+            <button class="btn-wp-danger" onclick="deleteCourse(${idx})">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function saveNewCourse(e) {
+      e.preventDefault();
+      const title = document.getElementById("cTitle").value;
+      const school = document.getElementById("cSchool").value;
+      const duration = document.getElementById("cDuration").value;
+      const fee = document.getElementById("cFee").value;
+
+      const stored = JSON.parse(localStorage.getItem("su_courses") || "null") || defaultCourses;
+      stored.unshift({ id: "course-" + Date.now(), title, school, duration, fee });
+      localStorage.setItem("su_courses", JSON.stringify(stored));
+
+      alert(`Success! Course "${title}" has been published to the university catalog.`);
+      document.getElementById("addCourseForm").reset();
+      renderAdminCoursesTable();
+    }
+
+    function deleteCourse(idx) {
+      if (confirm("Are you sure you want to delete this course from the university catalog?")) {
+        const stored = JSON.parse(localStorage.getItem("su_courses") || "null") || defaultCourses;
+        stored.splice(idx, 1);
+        localStorage.setItem("su_courses", JSON.stringify(stored));
+        renderAdminCoursesTable();
+      }
+    }
+
+    function saveNewNews(e) {
+      e.preventDefault();
+      const title = document.getElementById("nTitle").value;
+      alert(`Success! News post "${title}" published live.`);
+      document.getElementById("addNewsForm").reset();
+    }
+
+    function saveSiteSettings(e) {
+      e.preventDefault();
+      alert("Site settings updated successfully across all pages!");
+    }
+
+    // Initialize Table
+    renderAdminCoursesTable();
+  </script>
+</body>
+</html>
